@@ -1,0 +1,26 @@
+.cover {
+    padding-top: 92px;
+    max-width: 1184px;
+    display: block;
+    width: 92.5%;
+    overflow: hidden;
+    margin: 0 auto;
+  }
+  
+  @media screen and (max-width:1024px) {
+    .cover {
+      width: 100vw;
+    }
+  }
+  
+  @media screen and (max-width:768px) {
+    .cover {
+      padding-top: 90px;
+    }
+  }
+  
+  @media all and (max-width:320px) {
+    .cover {
+      padding-top: 66px;
+    }
+  }

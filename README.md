@@ -21,4 +21,4 @@
 Не забудьте [оптимизировать картинки](https://tinypng.com/), чтобы ваш сайт загружался быстрее.
 
 Удачи!
-TODO intro photo-grid places cover footer readme
+TODO photo-grid cover footer readme

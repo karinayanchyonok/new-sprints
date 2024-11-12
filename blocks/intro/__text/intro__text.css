@@ -1,10 +1,7 @@
-@import url("../../../fonts/fonts.css");
-
-.intro__text{
-    font-family: 'Inter';
-    width: 100%;
-    font-size: 16px;
-    line-height: 1.63;
-    margin-top: 40px;
-    font-weight: 400;
+.intro__text {
+  width: 100%;
+  font-size: 16px;
+  line-height: 1.63;
+  margin-top: 40px;
+  font-weight: 400;
 }

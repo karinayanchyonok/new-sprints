@@ -2,6 +2,7 @@
     max-width: 690px;
     margin: 92px 442px 0 148px;
 }
+/*TODO отступы*/
 
 @media screen and (max-width: 1024px) {
     .intro{

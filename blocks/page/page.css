@@ -1,6 +1,9 @@
-.page{
-    background-color: #2A2C2F;
-    margin: 0;
-    padding: 0;
-    color: white;
+@import url("../../../fonts/fonts.css");
+
+.page {
+  background-color: #2a2c2f;
+  margin: 0;
+  padding: 0;
+  color: white;
+  font-family: "Inter";
 }

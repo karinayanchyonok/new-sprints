@@ -1,19 +1,15 @@
-@import url("../../../fonts/fonts.css");
+.lead {
+  max-width: 984px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  color: #fff;
 
-.lead{
-    max-width: 984px;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    color: #fff;
-    font-family: 'Inter', Arial, sans-serif;
-    margin: 56px auto 0 auto;
+  margin: 56px auto 0 auto;
 }
 
 @media screen and (max-width: 1024px) {
-    .lead{
-        margin-top: 48px;
-    }
+  .lead {
+    margin-top: 48px;
+  }
 }
-
-

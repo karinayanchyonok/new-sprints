@@ -2,7 +2,6 @@
     max-width: 690px;
     margin: 92px 442px 0 148px;
 }
-/*TODO отступы чтоб были относительные*/
 
 @media screen and (max-width: 1024px) {
     .intro{

@@ -3,4 +3,9 @@
     font-size: 18px;
     line-height: calc(22/18);
     margin-top: 12px;
+    transition: opacity 0.5s ease;
+
 }
+.place__link:hover {
+    opacity: 0.8;
+  }

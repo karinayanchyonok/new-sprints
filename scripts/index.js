@@ -21,7 +21,7 @@ closeProfilePopupButton.addEventListener("click", function () {
 })
 
 
-const profileFormElement = document.querySelector(".popup__content");// Воспользуйтесь методом querySelector()
+const profileFormElement = profilePopup.querySelector(".popup__form");// Воспользуйтесь методом querySelector()
 const nameInput = document.querySelector(".popup__input_type_name");// Воспользуйтесь инструментом .querySelector()
 const jobInput = document.querySelector(".popup__input_type_description");// Воспользуйтесь инструментом .querySelector()
 
@@ -93,7 +93,7 @@ closePopupCardButton.addEventListener("click", function () {
     closeModal(cardPopup);
 })
 
-const cardFormElement = document.querySelector(".popup_type_new-card");
+const cardFormElement = cardPopup.querySelector(".popup__form");
 const namePlaceInput = document.querySelector(".popup__input_type_card-name");
 const urlPlaceInput = document.querySelector(".popup__input_type_url");
 

@@ -10,19 +10,7 @@ profileImage.style.backgroundImage = `url(${avatarUrl})`;
 
 const profilePopup = document.querySelector(".popup_type_edit");
 const cardPopup = document.querySelector(".popup_type_new-card");
-const imagePopup = document.querySelector(".popup_type_image");
-
-profilePopup.addEventListener("click", (evt, profilePopup) => {
-    closePopupOverlay(evt, profilePopup);
-});
-
-cardPopup.addEventListener("click", (evt, cardPopup) => {
-    closePopupOverlay(evt, cardPopup);
-});
-
-imagePopup.addEventListener("click", (evt, imagePopup) => {
-    closePopupOverlay(evt, imagePopup);
-});
+export const imagePopup = document.querySelector(".popup_type_image");
 
 profilePopup.classList.add("popup_is-animated");
 cardPopup.classList.add("popup_is-animated");
@@ -56,8 +44,6 @@ function handleProfileFormSubmit(evt) {
 }
 profileFormElement.addEventListener('submit', handleProfileFormSubmit);
 
-const imageOfImagePopup = imagePopup.querySelector(".popup__image"); /*TODO MISTAKE */
-const captionOfImagePopup = imagePopup.querySelector(".popup__caption");
 const closeImagePopupButton = imagePopup.querySelector(".popup__close");
 
 closeImagePopupButton.addEventListener("click", function () {
@@ -109,4 +95,14 @@ const validationSettings = {
 }
 enableValidation(validationSettings);
 
+profilePopup.addEventListener("click", (evt) => {
+    closePopupOverlay(evt, profilePopup);
+});
 
+cardPopup.addEventListener("click", (evt) => {
+    closePopupOverlay(evt, cardPopup);
+});
+
+imagePopup.addEventListener("click", (evt) => {
+    closePopupOverlay(evt, imagePopup);
+});

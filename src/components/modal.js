@@ -16,7 +16,7 @@ const closePopupOverlay = (evt, popup) => {
     }
 }
 
-const closeByEsc = (evt) => {
+function closeByEsc(evt){
     if (evt.key === "Escape") {
         const openedPopup = document.querySelector('.popup_opened');
         closeModal(openedPopup);

@@ -67,6 +67,7 @@ const enableValidation = (validationSettings) => {
         formElement.addEventListener("input", () => {
             toggleButtonState(inputList, buttonElement, validationSettings);
         });
+
         setInputListeners(formElement, inputList, validationSettings);
     })
 }

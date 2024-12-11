@@ -3,6 +3,7 @@ import avatarUrl from '../images/avatar.jpg';
 import { enableValidation } from "./validate";
 import { createCard } from './card';
 import { initialCards } from './cards';
+import { openModal, closeModal, closePopupOverlay } from './modal';
 
 const profileImage = document.querySelector('.profile__image');
 profileImage.style.backgroundImage = `url(${avatarUrl})`;
@@ -10,6 +11,18 @@ profileImage.style.backgroundImage = `url(${avatarUrl})`;
 const profilePopup = document.querySelector(".popup_type_edit");
 const cardPopup = document.querySelector(".popup_type_new-card");
 const imagePopup = document.querySelector(".popup_type_image");
+
+profilePopup.addEventListener("click", (evt, profilePopup) => {
+    closePopupOverlay(evt, profilePopup);
+});
+
+cardPopup.addEventListener("click", (evt, cardPopup) => {
+    closePopupOverlay(evt, cardPopup);
+});
+
+imagePopup.addEventListener("click", (evt, imagePopup) => {
+    closePopupOverlay(evt, imagePopup);
+});
 
 profilePopup.classList.add("popup_is-animated");
 cardPopup.classList.add("popup_is-animated");
@@ -43,15 +56,7 @@ function handleProfileFormSubmit(evt) {
 }
 profileFormElement.addEventListener('submit', handleProfileFormSubmit);
 
-
-function openModal(popup) {
-    popup.classList.add('popup_is-opened');
-}
-function closeModal(popup) {
-    popup.classList.toggle("popup_is-opened");
-}
-
-const imageOfImagePopup = imagePopup.querySelector(".popup__image");
+const imageOfImagePopup = imagePopup.querySelector(".popup__image"); /*TODO MISTAKE */
 const captionOfImagePopup = imagePopup.querySelector(".popup__caption");
 const closeImagePopupButton = imagePopup.querySelector(".popup__close");
 
@@ -103,3 +108,5 @@ const validationSettings = {
     errorClass: 'popup__error_visible'
 }
 enableValidation(validationSettings);
+
+

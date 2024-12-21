@@ -766,6 +766,20 @@ template {
   margin: 0;
 }
 
+.card__like-group {
+    display: flex;
+    justify-content: space-between;
+    flex-flow: column;
+  }
+.card__like-amount {
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 16px;
+    text-align: center;
+    color: #000;
+    padding-top: 3px;
+  }
 .card {
   font-family: 'Inter', Arial, sans-serif;
   -webkit-border-radius: 10px;

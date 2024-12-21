@@ -7,3 +7,5 @@
 * grid
 * babel
 * npm
+
+[Ссылка на сайт](https://karinayanchyonok.github.io/new-sprints/)

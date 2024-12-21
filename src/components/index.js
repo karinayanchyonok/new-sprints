@@ -2,24 +2,104 @@ import '../pages/index.css';
 import avatarUrl from '../images/avatar.jpg';
 import { enableValidation } from "./validate";
 import { createCard } from './card';
-import { initialCards } from './cards';
 import { openModal, closeModal, closePopupOverlay } from './modal';
+import { getInitialCards, getUserInformation, updateProfile, addNewCard, changeAvatar} from './api';
 
 const profileImage = document.querySelector('.profile__image');
 profileImage.style.backgroundImage = `url(${avatarUrl})`;
 
+
+const profileTitle = document.querySelector(".profile__title");
+const profileDesc = document.querySelector(".profile__description");
+export var idMe = '';
+
+getUserInformation()
+    .then(res => {
+        if (res.ok) {
+            return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+    })
+    .then((res) => {
+        console.log(res);
+        profileTitle.textContent = res.name;
+        profileDesc.textContent = res.about;
+        profileImage.style.backgroundImage = res.avatar; /*TODO image  */
+        idMe = res._id;
+    })
+    .catch(res => console.log(res.status))
+
+
+var initialCards = {};
+
+/*-----------------создание карточек-----------------------*/
+getInitialCards()
+    .then(res => {
+        if (res.ok) {
+            return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+    })
+    .then((res) => {
+        initialCards = res;
+        /* console.log(initialCards); TODO delete in case  */
+        createAllCards(initialCards)
+    })
+    .catch(res => console.log(res.status))
+
+function createAllCards(initialCards){
+    for (let i = 0; i < initialCards.length; i++) {
+        const itemName = initialCards[i].name;
+        const itemLink = initialCards[i].link;
+        const likesAmount = initialCards[i].likes.length;
+        const idOfOwner = initialCards[i].owner._id;
+        const idOfCard = initialCards[i]._id;
+        const likesArray = initialCards[i].likes;
+        const newCardFromCards = createCard(itemName, itemLink, likesAmount, idOfOwner, idOfCard, likesArray);
+        placesList.append(newCardFromCards);
+    }
+};
+/*---------------------------------------------------*/
+
+
 const profilePopup = document.querySelector(".popup_type_edit");
 const cardPopup = document.querySelector(".popup_type_new-card");
 export const imagePopup = document.querySelector(".popup_type_image");
+const avatarPopup = document.querySelector(".popup_type_new-avatar");
 
 profilePopup.classList.add("popup_is-animated");
 cardPopup.classList.add("popup_is-animated");
 imagePopup.classList.add("popup_is-animated");
-
+avatarPopup.classList.add("popup_is-animated");
+/*-----------------------avatar popup changes---------------------*/
+const avatarElement = document.querySelector(".profile__image");
+avatarElement.addEventListener("click", ()=>{
+    openModal(avatarPopup);
+})
+const closeAvatarPopup = avatarPopup.querySelector(".popup__close")
+closeAvatarPopup.addEventListener("click", () => {
+    closeModal(avatarPopup);
+})
+const avatarFormElement = avatarPopup.querySelector(".popup__form");
+function handleAvatarFormSubmit(evt) {
+    evt.preventDefault(); /*TODO сдать на сервер фото и очистить форму и закрыть */
+    const urlInput = avatarPopup.querySelector(".popup__input_type_avatar-url");
+    changeAvatar(urlInput.value)
+        .then(res => {
+            if (res.ok) {
+                return res.json();
+            }
+            return Promise.reject(`Ошибка: ${res.status}`);
+        })
+        .then(res => profileImage.style.backgroundImage = res.avatar) /*TODO не работает*/
+        .catch(res => console.log(res.status))
+    closeModal(avatarPopup);
+};
+avatarFormElement.addEventListener("submit", handleAvatarFormSubmit);
+/*-----------------------------------------------------------------*/
 const profileButton = document.querySelector(".profile__edit-button");
 const closeProfilePopupButton = profilePopup.querySelector(".popup__close");
 
-// функция для переноса имени и профессии
 profileButton.addEventListener("click", function () {
     nameInput.value = document.querySelector(".profile__title").textContent;
     jobInput.value = document.querySelector(".profile__description").textContent;
@@ -31,18 +111,29 @@ closeProfilePopupButton.addEventListener("click", function () {
 })
 
 
-const profileFormElement = profilePopup.querySelector(".popup__form");// Воспользуйтесь методом querySelector()
-const nameInput = document.querySelector(".popup__input_type_name");// Воспользуйтесь инструментом .querySelector()
-const jobInput = document.querySelector(".popup__input_type_description");// Воспользуйтесь инструментом .querySelector()
+const profileFormElement = profilePopup.querySelector(".popup__form");
+const nameInput = document.querySelector(".popup__input_type_name");
+const jobInput = document.querySelector(".popup__input_type_description");
 
-
+/*-----редактирование профиля по кнопке-----*/
 function handleProfileFormSubmit(evt) {
     evt.preventDefault();
     document.querySelector(".profile__title").textContent = nameInput.value;
     document.querySelector(".profile__description").textContent = jobInput.value;
+    updateProfile(nameInput.value, jobInput.value)
+    .then(res => {
+        if (res.ok) {
+            return res.json();
+        }
+        return Promise.reject(`Ошибка: ${res.status}`);
+    })
+    /*.then(res => console.log(res))*/
+    .catch(res => console.log(res.status))
     closeModal(profilePopup);
 }
 profileFormElement.addEventListener('submit', handleProfileFormSubmit);
+/*-----------------------------------------*/
+
 
 const closeImagePopupButton = imagePopup.querySelector(".popup__close");
 
@@ -53,11 +144,6 @@ closeImagePopupButton.addEventListener("click", function () {
 const placesList = document.querySelector(".places__list");
 const buttonAddCard = document.querySelector(".profile__add-button");
 const closePopupCardButton = cardPopup.querySelector(".popup__close");
-
-for (let i = 0; i < initialCards.length; i++) {
-    const newCardFromCards = createCard(initialCards[i].name, initialCards[i].link);
-    placesList.append(newCardFromCards);
-}
 
 buttonAddCard.addEventListener("click", function () {
     openModal(cardPopup);
@@ -71,19 +157,31 @@ const cardFormElement = cardPopup.querySelector(".popup__form");
 const namePlaceInput = document.querySelector(".popup__input_type_card-name");
 const urlPlaceInput = document.querySelector(".popup__input_type_url");
 
+/*-------------------добавление новой карточки---------------------*/
 function handleCardFormSubmit(evt) {
     evt.preventDefault();
     const newName = namePlaceInput.value;
-    const newImage = urlPlaceInput.value;
-    console.log(newName, newImage)
-    const newCard = createCard(newName, newImage);
-    console.log(newCard)
+    const newImage = urlPlaceInput.value; 
+    const newCard = createCard(newName, newImage, 0, idMe, '', []);
     placesList.prepend(newCard);
+    addNewCard(newName, newImage)
+        .then(res => {
+            if (res.ok) {
+                return res.json();
+            }
+            return Promise.reject(`Ошибка: ${res.status}`);
+        })
+        .then((res) => {
+            console.log(res);
+            /*TODO пока вроде все ок*/
+        })
+        .catch(res => console.log(res.status))
     closeModal(cardPopup);
     namePlaceInput.value = "";
     urlPlaceInput.value = "";
 }
 cardFormElement.addEventListener('submit', handleCardFormSubmit);
+/*----------------------------------------*/
 
 const validationSettings = {
     formSelector: '.popup__form',
@@ -106,3 +204,6 @@ cardPopup.addEventListener("click", (evt) => {
 imagePopup.addEventListener("click", (evt) => {
     closePopupOverlay(evt, imagePopup);
 });
+avatarPopup.addEventListener("click", (evt) => {
+    closePopupOverlay(evt, avatarPopup);
+})

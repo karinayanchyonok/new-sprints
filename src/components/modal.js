@@ -4,7 +4,7 @@ function openModal(popup) {
 }
 function closeModal(popup) {
     popup.classList.toggle("popup_is-opened");
-    document.removeEventListener("keydown", (evt) => closeByEsc(evt)); /*TODO тут ломается выход черес esc */
+    document.removeEventListener("keydown", (evt) => closeByEsc(evt));
 }
 
 const closePopupOverlay = (evt, popup) => {
@@ -16,10 +16,10 @@ const closePopupOverlay = (evt, popup) => {
     }
 }
 
-function closeByEsc(evt){
-    if (evt.key === "Escape") {
-        const openedPopup = document.querySelector('.popup_opened');
-        closeModal(openedPopup);
+function closeByEsc(evt) {
+    const popup = document.querySelector('.popup_is-opened');
+    if (evt.key == 'Escape' && popup) {
+        popup.classList.remove('popup_is-opened');
     }
 }
 

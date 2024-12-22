@@ -80,4 +80,3 @@ export const changeAvatar = (avatar) =>{
     });
 };
 
-/*TODO all under this line from task 11*/

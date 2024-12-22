@@ -3,7 +3,7 @@ import avatarUrl from '../images/avatar.jpg';
 import { enableValidation } from "./validate";
 import { createCard } from './card';
 import { openModal, closeModal, closePopupOverlay } from './modal';
-import { getInitialCards, getUserInformation, updateProfile, addNewCard, changeAvatar} from './api';
+import { getInitialCards, getUserInformation, updateProfile, addNewCard, changeAvatar } from './api';
 
 const profileImage = document.querySelector('.profile__image');
 profileImage.style.backgroundImage = `url(${avatarUrl})`;
@@ -21,11 +21,12 @@ getUserInformation()
         return Promise.reject(`Ошибка: ${res.status}`);
     })
     .then((res) => {
-        console.log(res);
         profileTitle.textContent = res.name;
         profileDesc.textContent = res.about;
-        profileImage.style.backgroundImage = res.avatar; /*TODO image  */
+        profileImage.style.backgroundImage = `url("${res.avatar}")`;
         idMe = res._id;
+        const urlInput = avatarPopup.querySelector(".popup__input_type_avatar-url");
+        urlInput.value = res.avatar;
     })
     .catch(res => console.log(res.status))
 
@@ -42,12 +43,11 @@ getInitialCards()
     })
     .then((res) => {
         initialCards = res;
-        /* console.log(initialCards); TODO delete in case  */
         createAllCards(initialCards)
     })
     .catch(res => console.log(res.status))
 
-function createAllCards(initialCards){
+function createAllCards(initialCards) {
     for (let i = 0; i < initialCards.length; i++) {
         const itemName = initialCards[i].name;
         const itemLink = initialCards[i].link;
@@ -73,7 +73,7 @@ imagePopup.classList.add("popup_is-animated");
 avatarPopup.classList.add("popup_is-animated");
 /*-----------------------avatar popup changes---------------------*/
 const avatarElement = document.querySelector(".profile__image");
-avatarElement.addEventListener("click", ()=>{
+avatarElement.addEventListener("click", () => {
     openModal(avatarPopup);
 })
 const closeAvatarPopup = avatarPopup.querySelector(".popup__close")
@@ -82,7 +82,9 @@ closeAvatarPopup.addEventListener("click", () => {
 })
 const avatarFormElement = avatarPopup.querySelector(".popup__form");
 function handleAvatarFormSubmit(evt) {
-    evt.preventDefault(); /*TODO сдать на сервер фото и очистить форму и закрыть */
+    evt.preventDefault();
+    const avatarButtonSubmit = avatarFormElement.querySelector(".popup__button");
+    avatarButtonSubmit.textContent = "Сохранение...";
     const urlInput = avatarPopup.querySelector(".popup__input_type_avatar-url");
     changeAvatar(urlInput.value)
         .then(res => {
@@ -91,9 +93,13 @@ function handleAvatarFormSubmit(evt) {
             }
             return Promise.reject(`Ошибка: ${res.status}`);
         })
-        .then(res => profileImage.style.backgroundImage = res.avatar) /*TODO не работает*/
+        .then((res) => {
+            profileImage.style.backgroundImage = `url("${res.avatar}")`;
+            avatarButtonSubmit.textContent = "Сохранить";
+        })
         .catch(res => console.log(res.status))
     closeModal(avatarPopup);
+
 };
 avatarFormElement.addEventListener("submit", handleAvatarFormSubmit);
 /*-----------------------------------------------------------------*/
@@ -118,18 +124,22 @@ const jobInput = document.querySelector(".popup__input_type_description");
 /*-----редактирование профиля по кнопке-----*/
 function handleProfileFormSubmit(evt) {
     evt.preventDefault();
+    const profileButtonSubmit = profileFormElement.querySelector(".popup__button");
+    profileButtonSubmit.textContent = "Сохранение...";
     document.querySelector(".profile__title").textContent = nameInput.value;
     document.querySelector(".profile__description").textContent = jobInput.value;
     updateProfile(nameInput.value, jobInput.value)
-    .then(res => {
-        if (res.ok) {
-            return res.json();
-        }
-        return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    /*.then(res => console.log(res))*/
-    .catch(res => console.log(res.status))
+        .then(res => {
+            if (res.ok) {
+                return res.json();
+            }
+            return Promise.reject(`Ошибка: ${res.status}`);
+        })
+        .then(() => profileButtonSubmit.textContent = "Сохранить")
+        /*.then(res => console.log(res))*/
+        .catch(res => console.log(res.status))
     closeModal(profilePopup);
+
 }
 profileFormElement.addEventListener('submit', handleProfileFormSubmit);
 /*-----------------------------------------*/
@@ -160,8 +170,10 @@ const urlPlaceInput = document.querySelector(".popup__input_type_url");
 /*-------------------добавление новой карточки---------------------*/
 function handleCardFormSubmit(evt) {
     evt.preventDefault();
+    const newCardButtonSubmit = cardFormElement.querySelector(".popup__button");
+    newCardButtonSubmit.textContent = "Сохранение...";
     const newName = namePlaceInput.value;
-    const newImage = urlPlaceInput.value; 
+    const newImage = urlPlaceInput.value;
     const newCard = createCard(newName, newImage, 0, idMe, '', []);
     placesList.prepend(newCard);
     addNewCard(newName, newImage)
@@ -172,11 +184,11 @@ function handleCardFormSubmit(evt) {
             return Promise.reject(`Ошибка: ${res.status}`);
         })
         .then((res) => {
-            console.log(res);
-            /*TODO пока вроде все ок*/
+            newCardButtonSubmit.textContent = "Сохранить";
         })
         .catch(res => console.log(res.status))
     closeModal(cardPopup);
+
     namePlaceInput.value = "";
     urlPlaceInput.value = "";
 }

@@ -20,10 +20,13 @@
       </header>
       <main class="content">
         <section class="profile page__section">
-          <div
+          <a href="#">
+            <div 
             class="profile__image"
             style="background-image: url('./images/avatar.jpg')"
           ></div>
+            <span class="profile__image-mask"></span>
+          </a> <!--TODO наведение для редактирования-->
           <div class="profile__info">
             <h1 class="profile__title">Жак-Ив Кусто</h1>
             <button class="profile__edit-button" type="button"></button>
@@ -96,8 +99,11 @@
               required
             />
             <span class="place-url-error"></span>
-            <button type="submit" class="button popup__button popup__button_disabled">
-              Сохранить
+            <button
+              type="submit"
+              class="button popup__button popup__button_disabled"
+            >
+              Создать
             </button>
           </form>
         </div>
@@ -114,11 +120,11 @@
               class="popup__input popup__input_type_avatar-url"
               placeholder="Ссылка на новый аватар"
               minlength="2"
-              maxlength="30"
+              maxlength="300"
               required
-            /><!--TODO validation and сохранение и наведение для редактирования + summit of new form -->
+            />
             <span class="avatar-image-error"></span>
-            <button type="submit" class="button popup__button popup__button_disabled">
+            <button type="submit" class="button popup__button">
               Сохранить
             </button>
           </form>
@@ -132,7 +138,6 @@
         </div>
       </div>
     </div>
-    
 
     <template id="card-template">
       <li class="places__item card">

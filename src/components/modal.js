@@ -19,7 +19,7 @@ const closePopupOverlay = (evt, popup) => {
 function closeByEsc(evt) {
     const popup = document.querySelector('.popup_is-opened');
     if (evt.key == 'Escape' && popup) {
-        popup.classList.remove('popup_is-opened');
+        popup.classList.remove('popup_is-opened'); 
     }
 }
 
